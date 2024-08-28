@@ -11,7 +11,6 @@
         <h1>Reminder App</h1>
         <div id="clock" class="clock">00:00:00</div>
 
-        <!-- New section for selecting reminder time and sound -->
         <div class="reminder-settings">
             <label for="reminderTime">Set Reminder Time:</label>
             <input type="time" id="reminderTime" class="time-picker">
@@ -25,6 +24,12 @@
 
             <button id="setReminderButton" class="btn">Set Reminder</button>
         </div>
+
+        <div class="reminder-list">
+            <h2>Set Reminders:</h2>
+            <ul id="reminderList"></ul>
+        </div>
+
     </div>
 
     <audio id="reminderSound" preload="auto"></audio>

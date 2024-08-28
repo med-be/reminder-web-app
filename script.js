@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const reminderTimeInput = document.getElementById('reminderTime');
     const soundSelector = document.getElementById('soundSelector');
     const reminderSound = document.getElementById('reminderSound');
+    const reminderList = document.getElementById('reminderList');
     let reminderTime = null;
 
     // Function to update the clock
@@ -34,7 +35,13 @@ document.addEventListener('DOMContentLoaded', function () {
             const [hours, minutes] = time.split(':');
             reminderTime = { hours, minutes };
             reminderSound.src = soundSelector.value;
-            alert(`Reminder set for ${hours}:${minutes} with sound: ${soundSelector.selectedOptions[0].text}`);
+
+            // Display the reminder time on the screen
+            const listItem = document.createElement('li');
+            listItem.textContent = `Reminder set for ${hours}:${minutes} with sound: ${soundSelector.selectedOptions[0].text}`;
+            reminderList.appendChild(listItem);
+
+            // alert(`Reminder set for ${hours}:${minutes} with sound: ${soundSelector.selectedOptions[0].text}`);
         } else {
             alert('Please select a valid time.');
         }
