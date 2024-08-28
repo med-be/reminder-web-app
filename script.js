@@ -1,6 +1,8 @@
 document.addEventListener('DOMContentLoaded', function () {
     const clockElement = document.getElementById('clock');
     const setReminderButton = document.getElementById('setReminderButton');
+    const reminderTimeInput = document.getElementById('reminderTime');
+    const soundSelector = document.getElementById('soundSelector');
     const reminderSound = document.getElementById('reminderSound');
     let reminderTime = null;
 
@@ -19,15 +21,22 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    // Play the selected sound immediately when changed
+    soundSelector.addEventListener('change', function () {
+        reminderSound.src = soundSelector.value;
+        reminderSound.play();
+    });
+
     // Function to set a reminder
     setReminderButton.addEventListener('click', function () {
-        const time = prompt('Set reminder time (HH:MM)');
-        if (time && /^([01]\d|2[0-3]):([0-5]\d)$/.test(time)) {
+        const time = reminderTimeInput.value;
+        if (time) {
             const [hours, minutes] = time.split(':');
             reminderTime = { hours, minutes };
-            alert(`Reminder set for ${hours}:${minutes}`);
+            reminderSound.src = soundSelector.value;
+            alert(`Reminder set for ${hours}:${minutes} with sound: ${soundSelector.selectedOptions[0].text}`);
         } else {
-            alert('Invalid time format. Please enter time as HH:MM.');
+            alert('Please select a valid time.');
         }
     });
 
