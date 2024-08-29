@@ -59,3 +59,42 @@ label {
 .btn:hover {
     background-color: #0056b3;
 }
+
+.reminder-list ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.reminder-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.btn-edit, .btn-delete {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+.btn-edit {
+    background-color: #28a745;
+}
+
+.btn-delete {
+    background-color: #dc3545;
+}
+
+.btn-edit:hover {
+    background-color: #218838;
+}
+
+.btn-delete:hover {
+    background-color: #c82333;
+}

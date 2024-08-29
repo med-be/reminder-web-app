@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const reminderSound = document.getElementById('reminderSound');
     const reminderList = document.getElementById('reminderList');
     let reminderTime = null;
+    let editingItem = null;
 
     // Function to update the clock
     function updateClock() {
@@ -15,7 +16,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const seconds = String(now.getSeconds()).padStart(2, '0');
         clockElement.textContent = `${hours}:${minutes}:${seconds}`;
 
-        // Check if it's time for the reminder
         if (reminderTime && hours === reminderTime.hours && minutes === reminderTime.minutes) {
             sendNotification();
             reminderTime = null; // Reset reminder after it triggers
@@ -28,20 +28,48 @@ document.addEventListener('DOMContentLoaded', function () {
         reminderSound.play();
     });
 
-    // Function to set a reminder
+    // Function to set or update a reminder
+    function setReminder(time, sound, item) {
+        const [hours, minutes] = time.split(':');
+        reminderTime = { hours, minutes };
+        reminderSound.src = sound;
+
+        if (item) {
+            // Update existing item
+            item.querySelector('.reminder-time').textContent = `Reminder set for ${hours}:${minutes}`;
+            item.querySelector('.reminder-sound').textContent = `Sound: ${soundSelector.selectedOptions[0].text}`;
+        } else {
+            // Create new item
+            const listItem = document.createElement('li');
+            listItem.innerHTML = `
+                <span class="reminder-time">Reminder set for ${hours}:${minutes}</span>
+                <button class="btn-edit">Edit</button>
+                <button class="btn-delete">Delete</button>
+            `;
+            listItem.querySelector('.btn-edit').addEventListener('click', function () {
+                reminderTimeInput.value = time;
+                soundSelector.value = sound;
+                editingItem = listItem;
+            });
+            listItem.querySelector('.btn-delete').addEventListener('click', function () {
+                reminderList.removeChild(listItem);
+            });
+            reminderList.appendChild(listItem);
+        }
+    }
+
+    // Function to handle setting or updating a reminder
     setReminderButton.addEventListener('click', function () {
         const time = reminderTimeInput.value;
+        const sound = soundSelector.value;
         if (time) {
-            const [hours, minutes] = time.split(':');
-            reminderTime = { hours, minutes };
-            reminderSound.src = soundSelector.value;
-
-            // Display the reminder time on the screen
-            const listItem = document.createElement('li');
-            listItem.textContent = `Reminder set for ${hours}:${minutes} with sound: ${soundSelector.selectedOptions[0].text}`;
-            reminderList.appendChild(listItem);
-
-            // alert(`Reminder set for ${hours}:${minutes} with sound: ${soundSelector.selectedOptions[0].text}`);
+            if (editingItem) {
+                setReminder(time, sound, editingItem);
+                editingItem = null;
+            } else {
+                setReminder(time, sound);
+            }
+            // alert(`Reminder set for ${time} with sound: ${soundSelector.selectedOptions[0].text}`);
         } else {
             alert('Please select a valid time.');
         }
